@@ -97,52 +97,53 @@ def dashboard_view(request):
             decoded_file = csv_file.read().decode('utf-8')
             df = pd.read_csv(io.StringIO(decoded_file))
 
-            # --- Data Preparation (Same as before) ---
+            # --- NEW: VALIDATION BLOCK ---
+            # Define the columns we absolutely need from the uploaded file.
+            required_columns = ['SALES', 'ORDERDATE', 'PRODUCTLINE']
+
+            # Check if all required columns exist in the dataframe.
+            if not all(column in df.columns for column in required_columns):
+                missing_cols = ", ".join([col for col in required_columns if col not in df.columns])
+                messages.error(request, f"The uploaded CSV is missing required columns: {missing_cols}")
+                return redirect('dashboard')
+            # --- END OF VALIDATION BLOCK ---
+
+
+            # --- Data Preparation (This code now runs only if validation passes) ---
             df.rename(columns={'SALES': 'Total Revenue', 'ORDERDATE': 'Date', 'PRODUCTLINE': 'Product Line'}, inplace=True)
             df['Date'] = pd.to_datetime(df['Date'])
 
-            # --- 1. CALCULATE KPIs (NEW SECTION) ---
+            # --- 1. CALCULATE KPIs ---
             total_revenue = df['Total Revenue'].sum()
-            total_orders = df['ORDERNUMBER'].nunique()
+            total_orders = df['ORDERNUMBER'].nunique() if 'ORDERNUMBER' in df.columns else len(df)
             average_order_value = total_revenue / total_orders
-            # Find the product line with the highest total revenue
             best_selling_product_line = df.groupby('Product Line')['Total Revenue'].sum().idxmax()
 
-            # Add formatted KPIs to context for display
             context['total_revenue'] = f"${total_revenue:,.2f}"
             context['total_orders'] = f"{total_orders:,}"
             context['average_order_value'] = f"${average_order_value:,.2f}"
             context['best_selling_product_line'] = best_selling_product_line
 
-            # --- 2. GENERATE SALES SUMMARY TABLE (Same as before) ---
+            # --- 2. GENERATE SALES SUMMARY TABLE ---
             summary_html = df.describe(include='all').to_html(
                 classes="w-full text-sm text-left text-gray-300",
                 border=0
             )
             context['sales_summary'] = summary_html
 
-            # --- 3. GENERATE MONTHLY TREND LINE CHART (Same as before) ---
+            # --- 3. GENERATE MONTHLY TREND LINE CHART ---
             monthly_sales = df.groupby(df['Date'].dt.to_period('M'))['Total Revenue'].sum().reset_index()
             monthly_sales['Date'] = monthly_sales['Date'].dt.to_timestamp()
-
             fig_line = px.line(monthly_sales, x='Date', y='Total Revenue', title='Monthly Sales Trend', markers=True)
             fig_line.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
             context['monthly_trend_chart_html'] = fig_line.to_html(full_html=False, include_plotlyjs=False)
 
-            # --- 4. GENERATE PRODUCT PERFORMANCE BAR CHART (NEW SECTION) ---
+            # --- 4. GENERATE PRODUCT PERFORMANCE BAR CHART ---
             product_sales = df.groupby('Product Line')['Total Revenue'].sum().sort_values(ascending=False).reset_index()
-
-            fig_bar = px.bar(
-                product_sales,
-                x='Product Line',
-                y='Total Revenue',
-                title='Sales by Product Line',
-                color='Product Line' # Give each bar a different color
-            )
+            fig_bar = px.bar(product_sales, x='Product Line', y='Total Revenue', title='Sales by Product Line', color='Product Line')
             fig_bar.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
             context['product_performance_chart_html'] = fig_bar.to_html(full_html=False, include_plotlyjs=False)
 
-            # --- Flag that results are ready to be displayed ---
             context['results_exist'] = True
 
         except Exception as e:
