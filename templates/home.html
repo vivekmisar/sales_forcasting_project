@@ -1,0 +1,63 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home | ForecastFlow{% endblock %}
+
+{% block content %}
+<div class="text-white text-center">
+
+    <!-- Hero Section -->
+    <div class="py-20">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">Unlock Your Sales Future</h1>
+        <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            Go beyond spreadsheets. Upload your sales data and let our AI-powered dashboard reveal trends, patterns, and forecasts in seconds.
+        </p>
+        <a href="{% url 'register' %}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300">
+            Get Started for Free
+        </a>
+    </div>
+
+    <!-- Features Section -->
+    <div class="py-20 border-t border-gray-800">
+        <h2 class="text-4xl font-bold mb-2">Powerful Features, Simple Interface</h2>
+        <p class="text-gray-400 mb-12">Everything you need to understand your sales data.</p>
+        <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            <div class="bg-gray-800 p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-3">Instant CSV Analysis</h3>
+                <p class="text-gray-400">Simply upload your CSV file and watch as our platform instantly processes and visualizes your sales data.</p>
+            </div>
+            <div class="bg-gray-800 p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-3">Insightful Visualizations</h3>
+                <p class="text-gray-400">From monthly trends to product performance, get beautiful, easy-to-understand charts and graphs.</p>
+            </div>
+            <div class="bg-gray-800 p-8 rounded-xl">
+                <h3 class="text-2xl font-bold mb-3">Key Metrics at a Glance</h3>
+                <p class="text-gray-400">See your total revenue, average sales, best-selling products, and more in a comprehensive summary.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- How it Works Section -->
+    <div class="py-20">
+        <h2 class="text-4xl font-bold mb-12">Three Simple Steps</h2>
+        <div class="max-w-4xl mx-auto grid md:grid-cols-3 gap-8 text-left">
+            <div class="relative">
+                <div class="text-5xl font-bold text-indigo-500 mb-4">1</div>
+                <h3 class="text-2xl font-bold mb-2">Create Account</h3>
+                <p class="text-gray-400">Sign up for a free account in seconds to get started.</p>
+            </div>
+            <div class="relative">
+                <div class="text-5xl font-bold text-indigo-500 mb-4">2</div>
+                <h3 class="text-2xl font-bold mb-2">Upload Your Data</h3>
+                <p class="text-gray-400">Drag and drop your sales CSV file into our secure dashboard.</p>
+            </div>
+            <div class="relative">
+                <div class="text-5xl font-bold text-indigo-500 mb-4">3</div>
+                <h3 class="text-2xl font-bold mb-2">Gain Insights</h3>
+                <p class="text-gray-400">Explore your interactive dashboard and make data-driven decisions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

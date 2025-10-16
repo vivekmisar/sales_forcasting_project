@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - ForecastFlow{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center pt-20">
+    <div class="bg-gray-800 p-12 rounded-2xl shadow-2xl w-full max-w-lg text-center">
+        <h2 class="text-4xl font-bold mb-4 text-white">My Profile</h2>
+        <div class="space-y-4 text-lg">
+            <p><span class="font-semibold text-gray-400">Username:</span> {{ user.username }}</p>
+            <p><span class="font-semibold text-gray-400">Email:</span> {{ user.email }}</p>
+            <p><span class="font-semibold text-gray-400">Joined:</span> {{ user.date_joined|date:"F j, Y" }}</p>
+        </div>
+        <div class="mt-8">
+             <a href="#" class="text-indigo-400 hover:underline">Edit Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
