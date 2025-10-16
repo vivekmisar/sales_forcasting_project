@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ForecastFlow{% endblock %}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <!-- ADD THIS SCRIPT FOR PLOTLY CHARTS -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 </head>
-<body class="text-gray-200">
+<body class="bg-gray-900 text-gray-200">
 
     <canvas id="bg-canvas"></canvas>
 

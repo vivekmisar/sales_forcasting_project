@@ -78,7 +78,6 @@ def logout_view(request):
     messages.info(request, "You have been successfully logged out.")
     return redirect('login')
 
-# These views are protected. You must be logged in to see them.
 @login_required(login_url='login')
 def dashboard_view(request):
     context = {}
@@ -98,17 +97,9 @@ def dashboard_view(request):
             decoded_file = csv_file.read().decode('utf-8')
             df = pd.read_csv(io.StringIO(decoded_file))
 
-            # --- FIX STARTS HERE ---
-            # Step 1: RENAME the columns from the new file to match what our code expects.
+            # --- Data preparation (this part is the same) ---
             df.rename(columns={'SALES': 'Total Revenue', 'ORDERDATE': 'Date'}, inplace=True)
-
-            # Step 2: CONVERT the 'Date' column. The new file has a standard format,
-            # so Pandas can handle it automatically without needing a special format code.
             df['Date'] = pd.to_datetime(df['Date'])
-            # --- FIX ENDS HERE ---
-
-
-            # --- The rest of the code now works perfectly ---
 
             summary_html = df.describe(include='all').to_html(
                 classes="w-full text-sm text-left text-gray-300",
@@ -116,23 +107,36 @@ def dashboard_view(request):
             )
             context['sales_summary'] = summary_html
 
-            plt.style.use('dark_background')
-            # Group by Month and sum the 'Total Revenue'
-            monthly_sales = df.groupby(df['Date'].dt.to_period('M'))['Total Revenue'].sum()
-            fig, ax = plt.subplots(figsize=(10, 5))
-            monthly_sales.plot(kind='line', marker='o', color='#818CF8', ax=ax)
-            ax.set_title('Monthly Sales Trend', color='white', fontsize=16)
-            ax.set_xlabel('Month', color='white')
-            ax.set_ylabel('Total Revenue', color='white')
-            ax.grid(color='#4B5563', linestyle='--', linewidth=0.5)
-            fig.tight_layout()
+            # --- PLOTLY CHART GENERATION (This replaces the Matplotlib code) ---
 
-            buf = io.BytesIO()
-            fig.savefig(buf, format='png', transparent=True)
-            buf.seek(0)
-            monthly_trend_chart = base64.b64encode(buf.getvalue()).decode('utf-8')
-            context['monthly_trend_chart'] = f'data:image/png;base64,{monthly_trend_chart}'
-            plt.close(fig)
+            # 1. Prepare data for the chart
+            monthly_sales = df.groupby(df['Date'].dt.to_period('M'))['Total Revenue'].sum().reset_index()
+            monthly_sales['Date'] = monthly_sales['Date'].dt.to_timestamp() # Convert Period to Timestamp for plotting
+
+            # 2. Create the figure with Plotly Express
+            fig = px.line(
+                monthly_sales,
+                x='Date',
+                y='Total Revenue',
+                title='Monthly Sales Trend',
+                markers=True,
+                labels={'Date': 'Month', 'Total Revenue': 'Total Revenue ($)'}
+            )
+
+            # 3. Update the layout for our dark theme
+            fig.update_layout(
+                template='plotly_dark',
+                paper_bgcolor='rgba(0, 0, 0, 0)',
+                plot_bgcolor='rgba(0, 0, 0, 0)',
+                title_font_color='#E5E7EB',
+                font_color='#9CA3AF'
+            )
+
+            # 4. Convert the figure to an HTML div
+            monthly_trend_chart_html = fig.to_html(full_html=False, include_plotlyjs=False)
+            context['monthly_trend_chart_html'] = monthly_trend_chart_html
+
+            # --- END OF PLOTLY CODE ---
 
             context['results_exist'] = True
 
