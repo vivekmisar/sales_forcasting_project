@@ -4,11 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 
-
+# Data processing and charting libraries
 import pandas as pd
 import io
-import base64
-from matplotlib import pyplot as plt
+import plotly.express as px
+
 
 # This view now handles the homepage.
 def home_view(request):
