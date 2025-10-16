@@ -97,47 +97,52 @@ def dashboard_view(request):
             decoded_file = csv_file.read().decode('utf-8')
             df = pd.read_csv(io.StringIO(decoded_file))
 
-            # --- Data preparation (this part is the same) ---
-            df.rename(columns={'SALES': 'Total Revenue', 'ORDERDATE': 'Date'}, inplace=True)
+            # --- Data Preparation (Same as before) ---
+            df.rename(columns={'SALES': 'Total Revenue', 'ORDERDATE': 'Date', 'PRODUCTLINE': 'Product Line'}, inplace=True)
             df['Date'] = pd.to_datetime(df['Date'])
 
+            # --- 1. CALCULATE KPIs (NEW SECTION) ---
+            total_revenue = df['Total Revenue'].sum()
+            total_orders = df['ORDERNUMBER'].nunique()
+            average_order_value = total_revenue / total_orders
+            # Find the product line with the highest total revenue
+            best_selling_product_line = df.groupby('Product Line')['Total Revenue'].sum().idxmax()
+
+            # Add formatted KPIs to context for display
+            context['total_revenue'] = f"${total_revenue:,.2f}"
+            context['total_orders'] = f"{total_orders:,}"
+            context['average_order_value'] = f"${average_order_value:,.2f}"
+            context['best_selling_product_line'] = best_selling_product_line
+
+            # --- 2. GENERATE SALES SUMMARY TABLE (Same as before) ---
             summary_html = df.describe(include='all').to_html(
                 classes="w-full text-sm text-left text-gray-300",
                 border=0
             )
             context['sales_summary'] = summary_html
 
-            # --- PLOTLY CHART GENERATION (This replaces the Matplotlib code) ---
-
-            # 1. Prepare data for the chart
+            # --- 3. GENERATE MONTHLY TREND LINE CHART (Same as before) ---
             monthly_sales = df.groupby(df['Date'].dt.to_period('M'))['Total Revenue'].sum().reset_index()
-            monthly_sales['Date'] = monthly_sales['Date'].dt.to_timestamp() # Convert Period to Timestamp for plotting
+            monthly_sales['Date'] = monthly_sales['Date'].dt.to_timestamp()
 
-            # 2. Create the figure with Plotly Express
-            fig = px.line(
-                monthly_sales,
-                x='Date',
+            fig_line = px.line(monthly_sales, x='Date', y='Total Revenue', title='Monthly Sales Trend', markers=True)
+            fig_line.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+            context['monthly_trend_chart_html'] = fig_line.to_html(full_html=False, include_plotlyjs=False)
+
+            # --- 4. GENERATE PRODUCT PERFORMANCE BAR CHART (NEW SECTION) ---
+            product_sales = df.groupby('Product Line')['Total Revenue'].sum().sort_values(ascending=False).reset_index()
+
+            fig_bar = px.bar(
+                product_sales,
+                x='Product Line',
                 y='Total Revenue',
-                title='Monthly Sales Trend',
-                markers=True,
-                labels={'Date': 'Month', 'Total Revenue': 'Total Revenue ($)'}
+                title='Sales by Product Line',
+                color='Product Line' # Give each bar a different color
             )
+            fig_bar.update_layout(template='plotly_dark', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+            context['product_performance_chart_html'] = fig_bar.to_html(full_html=False, include_plotlyjs=False)
 
-            # 3. Update the layout for our dark theme
-            fig.update_layout(
-                template='plotly_dark',
-                paper_bgcolor='rgba(0, 0, 0, 0)',
-                plot_bgcolor='rgba(0, 0, 0, 0)',
-                title_font_color='#E5E7EB',
-                font_color='#9CA3AF'
-            )
-
-            # 4. Convert the figure to an HTML div
-            monthly_trend_chart_html = fig.to_html(full_html=False, include_plotlyjs=False)
-            context['monthly_trend_chart_html'] = monthly_trend_chart_html
-
-            # --- END OF PLOTLY CODE ---
-
+            # --- Flag that results are ready to be displayed ---
             context['results_exist'] = True
 
         except Exception as e:
@@ -145,6 +150,8 @@ def dashboard_view(request):
             return redirect('dashboard')
 
     return render(request, 'dashboard.html', context)
+
+
 
 
 

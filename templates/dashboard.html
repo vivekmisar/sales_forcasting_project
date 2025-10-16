@@ -51,21 +51,49 @@
     <div id="results">
         <h2 class="text-3xl font-bold mb-6 border-t border-gray-700 pt-8">Analysis Results</h2>
 
-        <!-- Sales Summary Report -->
-        <div class="bg-gray-800 p-6 rounded-xl mb-8">
-            <h3 class="text-xl font-semibold mb-4">Sales Summary Report</h3>
-            <div class="overflow-x-auto">
-                {{ sales_summary|safe }}
+        <!-- KPI CARDS SECTION (NEW) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Revenue Card -->
+            <div class="bg-gray-800 p-6 rounded-xl">
+                <h4 class="text-sm font-medium text-gray-400">Total Revenue</h4>
+                <p class="text-3xl font-bold mt-1">{{ total_revenue }}</p>
+            </div>
+            <!-- Total Orders Card -->
+            <div class="bg-gray-800 p-6 rounded-xl">
+                <h4 class="text-sm font-medium text-gray-400">Total Orders</h4>
+                <p class="text-3xl font-bold mt-1">{{ total_orders }}</p>
+            </div>
+            <!-- Average Order Value Card -->
+            <div class="bg-gray-800 p-6 rounded-xl">
+                <h4 class="text-sm font-medium text-gray-400">Avg. Order Value</h4>
+                <p class="text-3xl font-bold mt-1">{{ average_order_value }}</p>
+            </div>
+            <!-- Best Product Line Card -->
+            <div class="bg-gray-800 p-6 rounded-xl">
+                <h4 class="text-sm font-medium text-gray-400">Top Product Line</h4>
+                <p class="text-3xl font-bold mt-1">{{ best_selling_product_line }}</p>
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <div class="grid md:grid-cols-1 gap-8">
+        <!-- CHARTS SECTION (UPDATED) -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-8">
             <!-- Monthly Sales Trend Chart -->
             <div class="bg-gray-800 p-6 rounded-xl">
                 <h3 class="text-xl font-semibold mb-4">Monthly Sales Trend</h3>
-                <!-- THIS IS THE UPDATED LINE -->
                 {{ monthly_trend_chart_html|safe }}
+            </div>
+            <!-- Product Performance Chart (NEW) -->
+            <div class="bg-gray-800 p-6 rounded-xl">
+                <h3 class="text-xl font-semibold mb-4">Sales by Product Line</h3>
+                {{ product_performance_chart_html|safe }}
+            </div>
+        </div>
+
+        <!-- Sales Summary Report Table -->
+        <div class="bg-gray-800 p-6 rounded-xl">
+            <h3 class="text-xl font-semibold mb-4">Detailed Sales Summary</h3>
+            <div class="overflow-x-auto">
+                {{ sales_summary|safe }}
             </div>
         </div>
     </div>
@@ -76,7 +104,6 @@
 <script>
     const fileInput = document.getElementById('csv_file_input');
     const uploadText = document.getElementById('upload-text');
-
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length > 0) {
             uploadText.textContent = `File selected: ${fileInput.files[0].name}`;
