@@ -3,114 +3,255 @@
 {% block title %}Dashboard | ForecastFlow{% endblock %}
 
 {% block content %}
-<div class="text-white">
-    <h1 class="text-4xl font-bold mb-2">Sales Dashboard</h1>
-    <p class="text-gray-400 mb-8">
-        Welcome, {{ request.user.username }}! Upload your sales data to get started.
-    </p>
-
-    <!-- Display Messages -->
-    {% if messages %}
-        <div class="mb-6">
-            {% for message in messages %}
-                <div class="p-4 rounded-md text-sm
-                    {% if message.tags == 'error' %} bg-red-900 bg-opacity-50 text-red-200 border border-red-700
-                    {% elif message.tags == 'success' %} bg-green-900 bg-opacity-50 text-green-200 border border-green-700
-                    {% else %} bg-blue-900 bg-opacity-50 text-blue-200 border border-blue-700
-                    {% endif %}">
-                    {{ message }}
+<div class="space-y-8 pb-12">
+    <!-- Header & Upload Section -->
+    <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Welcome & Stats -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="glass p-8 rounded-2xl border border-white/10 relative overflow-hidden">
+                <div class="relative z-10">
+                    <h1 class="text-3xl font-bold text-white mb-2">Dashboard Overview</h1>
+                    <p class="text-gray-400">Welcome back, <span class="text-brand-400 font-semibold">{% if user.is_authenticated %}{{ user.username }}{% else %}Guest{% endif %}</span>.
+                        Here's what's happening with your sales.</p>
                 </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                <div class="absolute right-0 top-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
+            </div>
 
-    <!-- Upload Form Section -->
-    <div class="bg-gray-800 p-8 rounded-xl mb-12 border-2 border-dashed border-gray-700 hover:border-indigo-500 transition duration-300">
-        <h2 class="text-2xl font-bold mb-4">Upload New Sales CSV</h2>
-        <form action="{% url 'dashboard' %}" method="post" enctype="multipart/form-data" id="upload-form">
-            {% csrf_token %}
-            <div class="flex items-center justify-center w-full">
-                <label for="csv_file_input" class="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600">
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                        <p id="upload-text" class="mb-2 text-sm text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500">CSV file (MAX. 5MB)</p>
+            <!-- KPI Grid (Only visible if results exist) -->
+            {% if results_exist %}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="glass p-6 rounded-xl border border-white/5 hover:border-brand-500/30 transition-colors group">
+                    <p class="text-sm text-gray-400 mb-1">Total Revenue</p>
+                    <h3 class="text-2xl font-bold text-white group-hover:text-brand-400 transition-colors">{{ total_revenue }}</h3>
+                </div>
+                <div class="glass p-6 rounded-xl border border-white/5 hover:border-brand-500/30 transition-colors group">
+                    <p class="text-sm text-gray-400 mb-1">Total Orders</p>
+                    <h3 class="text-2xl font-bold text-white group-hover:text-brand-400 transition-colors">{{ total_orders }}</h3>
+                </div>
+                <div class="glass p-6 rounded-xl border border-white/5 hover:border-brand-500/30 transition-colors group">
+                    <p class="text-sm text-gray-400 mb-1">Avg. Order Value</p>
+                    <h3 class="text-2xl font-bold text-white group-hover:text-brand-400 transition-colors">{{ average_order_value }}</h3>
+                </div>
+                <div class="glass p-6 rounded-xl border border-white/5 hover:border-brand-500/30 transition-colors group">
+                    <p class="text-sm text-gray-400 mb-1">Top Product</p>
+                    <h3 class="text-lg font-bold text-white truncate group-hover:text-brand-400 transition-colors" title="{{ best_selling_product_line }}">{{ best_selling_product_line }}</h3>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Upload Card -->
+        <div class="glass p-8 rounded-2xl border border-white/10 flex flex-col justify-center relative overflow-hidden">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                Upload Data
+            </h2>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+                <div class="relative group">
+                    <input type="file" name="csv_file" id="csv_file" accept=".csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="document.getElementById('file-name').textContent = this.files[0] ? this.files[0].name : 'Drop CSV or Click to Browse'">
+                    <div class="border-2 border-dashed border-gray-600 group-hover:border-brand-500 rounded-xl p-8 text-center transition-colors bg-dark-bg/30 group-hover:bg-dark-bg/50">
+                        <div class="mb-3">
+                            <svg class="w-10 h-10 text-gray-400 group-hover:text-brand-400 mx-auto transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-300 font-medium" id="file-name">Drop CSV or Click to Browse</p>
+                        <p class="text-xs text-gray-500 mt-2">Required columns: SALES (or Revenue), ORDERDATE (or Date), PRODUCTLINE (or Product_name)</p>
                     </div>
-                    <input id="csv_file_input" name="csv_file" type="file" class="hidden" accept=".csv" />
-                </label>
-            </div>
-            <div class="mt-6 text-right">
-                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
-                    Analyze Data
+                </div>
+                <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl shadow-lg shadow-brand-500/20 transition-all">
+                    Analyze Now
                 </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     {% if results_exist %}
-    <div id="results">
-        <h2 class="text-3xl font-bold mb-6 border-t border-gray-700 pt-8">Analysis Results</h2>
+    <!-- Analysis Control Panel -->
+    <div class="flex flex-wrap gap-4 border-b border-white/10 pb-4 mb-6">
+        <button onclick="switchTab('overview')" class="px-6 py-2 rounded-full glass hover:bg-brand-500/20 text-sm font-medium transition-all active-tab" id="tab-overview">Overview</button>
+        <button onclick="switchTab('trends')" class="px-6 py-2 rounded-full glass hover:bg-brand-500/20 text-sm font-medium transition-all" id="tab-trends">Sales Trends</button>
+        <button onclick="switchTab('products')" class="px-6 py-2 rounded-full glass hover:bg-brand-500/20 text-sm font-medium transition-all" id="tab-products">Product Analysis</button>
+        <button onclick="switchTab('yearly')" class="px-6 py-2 rounded-full glass hover:bg-brand-500/20 text-sm font-medium transition-all" id="tab-yearly">Yearly Comparison</button>
+        <button onclick="switchTab('top')" class="px-6 py-2 rounded-full glass hover:bg-brand-500/20 text-sm font-medium transition-all" id="tab-top">Top Products</button>
+        <button onclick="switchTab('data')" class="px-6 py-2 rounded-full glass hover:bg-brand-500/20 text-sm font-medium transition-all" id="tab-data">Raw Data</button>
+    </div>
 
-        <!-- KPI CARDS SECTION (NEW) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Revenue Card -->
-            <div class="bg-gray-800 p-6 rounded-xl">
-                <h4 class="text-sm font-medium text-gray-400">Total Revenue</h4>
-                <p class="text-3xl font-bold mt-1">{{ total_revenue }}</p>
-            </div>
-            <!-- Total Orders Card -->
-            <div class="bg-gray-800 p-6 rounded-xl">
-                <h4 class="text-sm font-medium text-gray-400">Total Orders</h4>
-                <p class="text-3xl font-bold mt-1">{{ total_orders }}</p>
-            </div>
-            <!-- Average Order Value Card -->
-            <div class="bg-gray-800 p-6 rounded-xl">
-                <h4 class="text-sm font-medium text-gray-400">Avg. Order Value</h4>
-                <p class="text-3xl font-bold mt-1">{{ average_order_value }}</p>
-            </div>
-            <!-- Best Product Line Card -->
-            <div class="bg-gray-800 p-6 rounded-xl">
-                <h4 class="text-sm font-medium text-gray-400">Top Product Line</h4>
-                <p class="text-3xl font-bold mt-1">{{ best_selling_product_line }}</p>
+    <!-- Main Content Area -->
+    <div class="grid gap-8 mb-12">
+        <!-- Overview Tab -->
+        <div id="view-overview" class="view-section space-y-8">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="glass p-6 rounded-2xl border border-white/10">
+                    <h3 class="text-lg font-bold text-white mb-6">Monthly Revenue Trend</h3>
+                    <div class="chart-container h-80">
+                        {% if monthly_trend_chart_html %}{{ monthly_trend_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-2xl border border-white/10">
+                    <h3 class="text-lg font-bold text-white mb-6">Sales by Product Line</h3>
+                    <div class="chart-container h-80">
+                        {% if product_performance_chart_html %}{{ product_performance_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- CHARTS SECTION (UPDATED) -->
-        <div class="grid lg:grid-cols-2 gap-8 mb-8">
-            <!-- Monthly Sales Trend Chart -->
-            <div class="bg-gray-800 p-6 rounded-xl">
-                <h3 class="text-xl font-semibold mb-4">Monthly Sales Trend</h3>
-                {{ monthly_trend_chart_html|safe }}
+        <!-- Sales Trends Tab -->
+        <div id="view-trends" class="view-section hidden space-y-8">
+            <div class="glass p-8 rounded-2xl border border-white/10">
+                <h3 class="text-xl font-bold text-white mb-6">Detailed Sales Trends: Revenue & Orders</h3>
+                <div class="chart-container h-[500px]">
+                    {% if sales_trend_chart_html %}{{ sales_trend_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                </div>
             </div>
-            <!-- Product Performance Chart (NEW) -->
-            <div class="bg-gray-800 p-6 rounded-xl">
-                <h3 class="text-xl font-semibold mb-4">Sales by Product Line</h3>
-                {{ product_performance_chart_html|safe }}
+            <div class="glass p-6 rounded-2xl border border-white/10">
+                <h3 class="text-lg font-bold text-white mb-6">Monthly Revenue Trend</h3>
+                <div class="chart-container h-80">
+                    {% if monthly_trend_chart_html %}{{ monthly_trend_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                </div>
             </div>
         </div>
 
-        <!-- Sales Summary Report Table -->
-        <div class="bg-gray-800 p-6 rounded-xl">
-            <h3 class="text-xl font-semibold mb-4">Detailed Sales Summary</h3>
-            <div class="overflow-x-auto">
-                {{ sales_summary|safe }}
+        <!-- Product Analysis Tab -->
+        <div id="view-products" class="view-section hidden space-y-8">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="glass p-8 rounded-2xl border border-white/10">
+                    <h3 class="text-xl font-bold text-white mb-6">Revenue Distribution by Product Line</h3>
+                    <div class="chart-container h-[500px]">
+                        {% if product_analysis_chart_html %}{{ product_analysis_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                    </div>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-white/10">
+                    <h3 class="text-xl font-bold text-white mb-6">Sales by Product Line</h3>
+                    <div class="chart-container h-[500px]">
+                        {% if product_performance_chart_html %}{{ product_performance_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yearly Comparison Tab -->
+        <div id="view-yearly" class="view-section hidden space-y-8">
+            <div class="glass p-8 rounded-2xl border border-white/10">
+                <h3 class="text-xl font-bold text-white mb-6">Yearly Revenue Comparison</h3>
+                <div class="chart-container h-[500px]">
+                    {% if yearly_comparison_chart_html %}{{ yearly_comparison_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Multiple years of data required for comparison.</p>{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Products Tab -->
+        <div id="view-top" class="view-section hidden space-y-8">
+            <div class="glass p-8 rounded-2xl border border-white/10">
+                <h3 class="text-xl font-bold text-white mb-6">Top Products by Revenue</h3>
+                <div class="chart-container h-[500px]">
+                    {% if top_products_chart_html %}{{ top_products_chart_html|safe }}{% else %}<p class="text-gray-400 text-center py-20">Chart data not available</p>{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Raw Data Tab -->
+        <div id="view-data" class="view-section hidden space-y-8">
+            <div class="glass p-8 rounded-2xl border border-white/10 overflow-x-auto">
+                <h3 class="text-xl font-bold text-white mb-6">Dataset Summary</h3>
+                <div class="overflow-x-auto">
+                    {% if sales_summary %}{{ sales_summary|safe }}{% else %}<p class="text-gray-400">No summary data available</p>{% endif %}
+                </div>
+            </div>
+            <div class="glass p-8 rounded-2xl border border-white/10 overflow-x-auto">
+                <h3 class="text-xl font-bold text-white mb-6">Raw Data (First 100 Rows)</h3>
+                <div class="overflow-x-auto">
+                    {% if raw_data_table %}{{ raw_data_table|safe }}{% else %}<p class="text-gray-400">No raw data available</p>{% endif %}
+                </div>
             </div>
         </div>
     </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-20 opacity-50">
+        <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+        </div>
+        <h3 class="text-xl font-medium text-white">No Data Analyzed Yet</h3>
+        <p class="text-gray-400 mt-2">Upload a CSV file above to generate your dashboard.</p>
+    </div>
     {% endif %}
-
 </div>
 
 <script>
-    const fileInput = document.getElementById('csv_file_input');
-    const uploadText = document.getElementById('upload-text');
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            uploadText.textContent = `File selected: ${fileInput.files[0].name}`;
-        } else {
-            uploadText.innerHTML = `<span class="font-semibold">Click to upload</span> or drag and drop`;
+    function switchTab(tabName) {
+        // Hide all sections
+        document.querySelectorAll('.view-section').forEach(el => {
+            el.classList.add('hidden');
+        });
+
+        // Show selected section
+        const targetSection = document.getElementById('view-' + tabName);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+        }
+
+        // Update buttons
+        document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+            btn.classList.remove('bg-brand-500/20', 'text-brand-300', 'border', 'border-brand-500/50');
+            btn.classList.add('glass');
+        });
+
+        const activeBtn = document.getElementById('tab-' + tabName);
+        if (activeBtn) {
+            activeBtn.classList.remove('glass');
+            activeBtn.classList.add('bg-brand-500/20', 'text-brand-300', 'border', 'border-brand-500/50');
+        }
+
+        // Trigger Plotly resize after a short delay to ensure DOM is updated
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 100);
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('tab-overview')) {
+            switchTab('overview');
         }
     });
 </script>
-{% endblock %}
 
+<style>
+    .chart-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    .chart-container .plotly {
+        width: 100% !important;
+    }
+    
+    table {
+        color: #f8fafc;
+    }
+    
+    table th {
+        background-color: rgba(56, 189, 248, 0.1);
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    table tr:hover {
+        background-color: rgba(56, 189, 248, 0.05);
+    }
+</style>
+{% endblock %}
