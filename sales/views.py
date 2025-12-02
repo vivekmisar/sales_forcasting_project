@@ -201,40 +201,79 @@ def dashboard_view(request):
                 markers=True,
                 line_shape='spline'
             )
-            fig_line.update_traces(line_color='#38bdf8', line_width=3)
+            fig_line.update_traces(
+                line_color='#38bdf8', 
+                line_width=3,
+                marker=dict(size=8, color='#38bdf8'),
+                fill='tonexty',
+                fillcolor='rgba(56, 189, 248, 0.1)'
+            )
             fig_line.update_layout(
                 template='plotly_dark',
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(30, 41, 59, 0.5)',
+                plot_bgcolor='rgba(15, 23, 42, 0.8)',
                 font_color='#f8fafc',
                 title_font_size=18,
                 xaxis_title='Month',
                 yaxis_title='Total Revenue ($)',
-                hovermode='x unified'
+                hovermode='x unified',
+                xaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                yaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                width=None,
+                height=None,
+                autosize=True
             )
-            context['monthly_trend_chart_html'] = fig_line.to_html(full_html=False, include_plotlyjs=False)
+            context['monthly_trend_chart_html'] = fig_line.to_html(full_html=False, include_plotlyjs=False, config={'displayModeBar': True})
 
             # --- 5. GENERATE PRODUCT PERFORMANCE BAR CHART ---
             product_sales = df.groupby('Product Line')['Total Revenue'].sum().sort_values(ascending=False).reset_index()
+            # Use brighter colors that are visible on dark background
+            bright_colors = ['#38bdf8', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4']
             fig_bar = px.bar(
                 product_sales, 
                 x='Product Line', 
                 y='Total Revenue', 
                 title='Sales by Product Line',
                 color='Product Line',
-                color_discrete_sequence=px.colors.qualitative.Set3
+                color_discrete_sequence=bright_colors
+            )
+            fig_bar.update_traces(
+                marker_line_width=1, 
+                marker_line_color='rgba(255,255,255,0.5)',
+                marker_opacity=0.9
             )
             fig_bar.update_layout(
                 template='plotly_dark',
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(30, 41, 59, 0.5)',
+                plot_bgcolor='rgba(15, 23, 42, 0.8)',
                 font_color='#f8fafc',
                 title_font_size=18,
                 xaxis_title='Product Line',
                 yaxis_title='Total Revenue ($)',
-                showlegend=False
+                showlegend=False,
+                xaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                yaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                width=None,
+                height=None,
+                autosize=True
             )
-            context['product_performance_chart_html'] = fig_bar.to_html(full_html=False, include_plotlyjs=False)
+            context['product_performance_chart_html'] = fig_bar.to_html(full_html=False, include_plotlyjs=False, config={'displayModeBar': True})
 
             # --- 6. GENERATE DETAILED SALES TREND CHART (with multiple metrics) ---
             if has_order_number:
@@ -267,12 +306,25 @@ def dashboard_view(request):
             fig_trends.update_layout(
                 title_text="Sales Trends: Revenue & Orders Over Time",
                 template='plotly_dark',
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(30, 41, 59, 0.5)',
+                plot_bgcolor='rgba(15, 23, 42, 0.8)',
                 font_color='#f8fafc',
-                title_font_size=18
+                title_font_size=18,
+                xaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                yaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                width=None,
+                height=None,
+                autosize=True
             )
-            context['sales_trend_chart_html'] = fig_trends.to_html(full_html=False, include_plotlyjs=False)
+            context['sales_trend_chart_html'] = fig_trends.to_html(full_html=False, include_plotlyjs=False, config={'displayModeBar': True})
 
             # --- 7. GENERATE PRODUCT ANALYSIS (Pie Chart + Bar Chart) ---
             if has_order_number:
@@ -288,42 +340,79 @@ def dashboard_view(request):
             product_analysis.columns = ['Product Line', 'Revenue', 'Orders']
             product_analysis = product_analysis.sort_values('Revenue', ascending=False)
             
+            # Use brighter colors for pie chart
+            bright_colors = ['#38bdf8', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4']
             fig_pie = px.pie(
                 product_analysis,
                 values='Revenue',
                 names='Product Line',
                 title='Revenue Distribution by Product Line',
-                color_discrete_sequence=px.colors.qualitative.Set3
+                color_discrete_sequence=bright_colors
+            )
+            fig_pie.update_traces(
+                textposition='inside',
+                textinfo='percent+label',
+                marker=dict(line=dict(color='rgba(255,255,255,0.3)', width=2))
             )
             fig_pie.update_layout(
                 template='plotly_dark',
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(30, 41, 59, 0.5)',
+                plot_bgcolor='rgba(15, 23, 42, 0.8)',
                 font_color='#f8fafc',
-                title_font_size=18
+                title_font_size=18,
+                showlegend=True,
+                legend=dict(
+                    font=dict(color='#f8fafc', size=12),
+                    bgcolor='rgba(30, 41, 59, 0.7)',
+                    bordercolor='rgba(255,255,255,0.2)',
+                    borderwidth=1
+                ),
+                width=None,
+                height=None,
+                autosize=True
             )
-            context['product_analysis_chart_html'] = fig_pie.to_html(full_html=False, include_plotlyjs=False)
+            context['product_analysis_chart_html'] = fig_pie.to_html(full_html=False, include_plotlyjs=False, config={'displayModeBar': True})
 
             # --- 8. GENERATE YEARLY COMPARISON CHART ---
             if len(df['Year'].unique()) > 1:
                 yearly_sales = df.groupby('Year')['Total Revenue'].sum().reset_index()
-                fig_yearly = px.bar(
-                    yearly_sales,
-                    x='Year',
-                    y='Total Revenue',
-                    title='Yearly Revenue Comparison',
-                    color='Total Revenue',
-                    color_continuous_scale='Blues'
-                )
+                # Use discrete colors for better visibility
+                fig_yearly = go.Figure()
+                colors = ['#38bdf8', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+                for idx, row in yearly_sales.iterrows():
+                    fig_yearly.add_trace(go.Bar(
+                        x=[row['Year']],
+                        y=[row['Total Revenue']],
+                        name=str(row['Year']),
+                        marker_color=colors[idx % len(colors)],
+                        marker_line_width=1,
+                        marker_line_color='rgba(255,255,255,0.3)'
+                    ))
                 fig_yearly.update_layout(
+                    title='Yearly Revenue Comparison',
                     template='plotly_dark',
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    plot_bgcolor='rgba(0,0,0,0)',
+                    paper_bgcolor='rgba(30, 41, 59, 0.5)',
+                    plot_bgcolor='rgba(15, 23, 42, 0.8)',
                     font_color='#f8fafc',
                     title_font_size=18,
-                    showlegend=False
+                    showlegend=False,
+                    xaxis_title='Year',
+                    yaxis_title='Total Revenue ($)',
+                    xaxis=dict(
+                        showgrid=True, 
+                        gridcolor='rgba(255,255,255,0.1)',
+                        tickfont=dict(color='#f8fafc')
+                    ),
+                    yaxis=dict(
+                        showgrid=True, 
+                        gridcolor='rgba(255,255,255,0.1)',
+                        tickfont=dict(color='#f8fafc')
+                    ),
+                    width=None,
+                    height=None,
+                    autosize=True
                 )
-                context['yearly_comparison_chart_html'] = fig_yearly.to_html(full_html=False, include_plotlyjs=False)
+                context['yearly_comparison_chart_html'] = fig_yearly.to_html(full_html=False, include_plotlyjs=False, config={'displayModeBar': True})
             else:
                 context['yearly_comparison_chart_html'] = '<p class="text-gray-400">Multiple years of data required for comparison.</p>'
 
@@ -353,14 +442,27 @@ def dashboard_view(request):
             fig_top.update_layout(
                 title='Top Products by Revenue',
                 template='plotly_dark',
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(30, 41, 59, 0.5)',
+                plot_bgcolor='rgba(15, 23, 42, 0.8)',
                 font_color='#f8fafc',
                 title_font_size=18,
                 xaxis_title='Revenue ($)',
-                yaxis_title='Product Line'
+                yaxis_title='Product Line',
+                xaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                yaxis=dict(
+                    showgrid=True, 
+                    gridcolor='rgba(255,255,255,0.1)',
+                    tickfont=dict(color='#f8fafc')
+                ),
+                width=None,
+                height=None,
+                autosize=True
             )
-            context['top_products_chart_html'] = fig_top.to_html(full_html=False, include_plotlyjs=False)
+            context['top_products_chart_html'] = fig_top.to_html(full_html=False, include_plotlyjs=False, config={'displayModeBar': True})
 
             context['results_exist'] = True
 
