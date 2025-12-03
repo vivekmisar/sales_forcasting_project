@@ -1,132 +1,97 @@
-ORDERDATE,PRODUCTLINE,SALES,ORDERNUMBER
-2024-07-04,Classic Cars,7307.62,10095
-2024-09-22,Motorcycles,9744.29,10071
-2024-06-10,Classic Cars,4971.65,10026
-2024-05-14,Trains,9328.38,10047
-2024-03-26,Motorcycles,4517.55,10077
-2024-05-11,Planes,8764.44,10058
-2023-03-13,Trains,7036.63,10087
-2024-02-18,Motorcycles,5947.26,10086
-2023-11-27,Classic Cars,7242.64,10005
-2023-01-08,Classic Cars,8739.82,10096
-2024-03-05,Motorcycles,5486.14,10005
-2023-01-04,Ships,2475.89,10004
-2023-11-25,Classic Cars,9421.08,10047
-2024-10-31,Ships,4305.46,10075
-2024-11-28,Motorcycles,8723.92,10025
-2024-02-23,Ships,9588.86,10028
-2024-05-24,Trains,5344.17,10006
-2023-07-24,Classic Cars,5906.89,10024
-2023-07-08,Trains,9585.28,10040
-2023-05-02,Ships,2971.23,10093
-2023-06-13,Trains,3671.55,10075
-2024-03-06,Ships,2951.53,10011
-2023-03-29,Planes,5762.2,10007
-2024-06-21,Classic Cars,9240.56,10005
-2023-09-03,Ships,6583.95,10010
-2023-12-31,Trains,3705.08,10089
-2024-02-06,Motorcycles,7881.31,10018
-2023-06-13,Classic Cars,8772.12,10025
-2023-08-21,Planes,6287.54,10020
-2024-08-07,Planes,5182.99,10058
-2023-12-14,Trains,2990.1,10086
-2024-08-16,Ships,7292.59,10034
-2024-08-16,Classic Cars,9067.25,10044
-2023-03-11,Planes,4231.01,10071
-2024-06-07,Ships,4179.54,10004
-2024-10-21,Trains,9478.92,10045
-2024-05-06,Trains,3879.17,10073
-2024-05-07,Ships,5800.8,10046
-2023-10-17,Motorcycles,2570.02,10056
-2024-06-19,Classic Cars,1442.44,10062
-2024-12-06,Motorcycles,7356.48,10005
-2023-12-23,Classic Cars,1835.58,10093
-2024-07-22,Classic Cars,4101.29,10056
-2023-07-07,Motorcycles,6094.27,10044
-2024-06-25,Trains,8745.77,10056
-2023-04-11,Trains,3996.26,10070
-2023-02-13,Ships,8984.83,10091
-2023-06-04,Ships,9454.01,10061
-2024-05-17,Planes,5142.2,10052
-2024-05-08,Ships,5619.84,10072
-2024-07-06,Classic Cars,4658.14,10050
-2023-10-13,Classic Cars,3462.62,10021
-2024-04-25,Planes,8590.0,10010
-2023-06-06,Motorcycles,1225.48,10066
-2023-06-21,Motorcycles,4562.02,10099
-2023-01-15,Classic Cars,8234.56,10100
-2023-02-20,Ships,6543.21,10101
-2023-03-10,Trains,7890.12,10102
-2023-04-05,Planes,5678.90,10103
-2023-05-18,Motorcycles,9123.45,10104
-2023-06-22,Classic Cars,6789.01,10105
-2023-07-15,Ships,5432.10,10106
-2023-08-08,Trains,8765.43,10107
-2023-09-12,Planes,4321.09,10108
-2023-10-25,Motorcycles,9876.54,10109
-2023-11-18,Classic Cars,7654.32,10110
-2023-12-05,Ships,6543.21,10111
-2024-01-10,Trains,7890.12,10112
-2024-01-25,Planes,5678.90,10113
-2024-02-14,Motorcycles,9123.45,10114
-2024-03-20,Classic Cars,6789.01,10115
-2024-04-08,Ships,5432.10,10116
-2024-04-22,Trains,8765.43,10117
-2024-05-15,Planes,4321.09,10118
-2024-06-12,Motorcycles,9876.54,10119
-2024-07-18,Classic Cars,7654.32,10120
-2024-08-25,Ships,6543.21,10121
-2024-09-10,Trains,7890.12,10122
-2024-09-28,Planes,5678.90,10123
-2024-10-15,Motorcycles,9123.45,10124
-2024-11-20,Classic Cars,6789.01,10125
-2024-12-10,Ships,5432.10,10126
-2023-01-22,Classic Cars,8234.56,10127
-2023-02-28,Ships,6543.21,10128
-2023-03-15,Trains,7890.12,10129
-2023-04-20,Planes,5678.90,10130
-2023-05-25,Motorcycles,9123.45,10131
-2023-06-30,Classic Cars,6789.01,10132
-2023-07-20,Ships,5432.10,10133
-2023-08-15,Trains,8765.43,10134
-2023-09-25,Planes,4321.09,10135
-2023-10-30,Motorcycles,9876.54,10136
-2023-11-15,Classic Cars,7654.32,10137
-2023-12-20,Ships,6543.21,10138
-2024-01-05,Trains,7890.12,10139
-2024-01-20,Planes,5678.90,10140
-2024-02-10,Motorcycles,9123.45,10141
-2024-03-15,Classic Cars,6789.01,10142
-2024-04-10,Ships,5432.10,10143
-2024-05-20,Trains,8765.43,10144
-2024-06-15,Planes,4321.09,10145
-2024-07-20,Motorcycles,9876.54,10146
-2024-08-10,Classic Cars,7654.32,10147
-2024-09-15,Ships,6543.21,10148
-2024-10-20,Trains,7890.12,10149
-2024-11-15,Planes,5678.90,10150
-2024-12-20,Motorcycles,9123.45,10151
-2023-01-30,Classic Cars,8234.56,10152
-2023-02-15,Ships,6543.21,10153
-2023-03-25,Trains,7890.12,10154
-2023-04-30,Planes,5678.90,10155
-2023-05-10,Motorcycles,9123.45,10156
-2023-06-18,Classic Cars,6789.01,10157
-2023-07-25,Ships,5432.10,10158
-2023-08-30,Trains,8765.43,10159
-2023-09-18,Planes,4321.09,10160
-2023-10-22,Motorcycles,9876.54,10161
-2023-11-28,Classic Cars,7654.32,10162
-2023-12-15,Ships,6543.21,10163
-2024-01-15,Trains,7890.12,10164
-2024-02-25,Planes,5678.90,10165
-2024-03-30,Motorcycles,9123.45,10166
-2024-04-15,Classic Cars,6789.01,10167
-2024-05-25,Ships,5432.10,10168
-2024-06-30,Trains,8765.43,10169
-2024-07-15,Planes,4321.09,10170
-2024-08-20,Motorcycles,9876.54,10171
-2024-09-25,Classic Cars,7654.32,10172
-2024-10-30,Ships,6543.21,10173
-2024-11-25,Trains,7890.12,10174
-2024-12-15,Planes,5678.90,10175
+OrderDate,OrderID,Product_name,PRODUCTLINE,Quantity,UnitPrice,Product_sold,SALES,Region,CustomerSegment
+2025-01-02,ORD001,Smartwatch X,Electronics,2,129.99,2,259.98,West,Retail
+2025-01-04,ORD002,Bluetooth Speaker Z,Electronics,1,89.50,1,89.50,East,Wholesale
+2025-01-06,ORD003,Air Purifier Pro,Home Appliances,3,199.00,3,597.00,North,Retail
+2025-01-09,ORD004,Thermometer A,Healthcare,5,19.99,5,99.95,South,Retail
+2025-01-11,ORD005,Running Shoes R,Sports,4,59.99,4,239.96,West,Retail
+2025-01-14,ORD006,Smartwatch X,Electronics,1,129.99,1,129.99,East,Retail
+2025-01-17,ORD007,LED Lamp L,Home Appliances,6,24.50,6,147.00,North,Wholesale
+2025-01-20,ORD008,Denim Jacket D,Clothing,2,79.00,2,158.00,South,Retail
+2025-01-22,ORD009,Smartphone S,Electronics,1,699.00,1,699.00,West,Retail
+2025-01-25,ORD010,Coffee Maker C,Home Appliances,2,129.00,2,258.00,East,Retail
+2025-02-01,ORD011,Yoga Mat Y,Sports,10,15.00,10,150.00,North,Retail
+2025-02-03,ORD012,Office Chair O,Furniture,1,249.99,1,249.99,South,Wholesale
+2025-02-05,ORD013,Smartphone S,Electronics,2,699.00,2,1398.00,West,Retail
+2025-02-07,ORD014,Blender B,Home Appliances,3,49.99,3,149.97,East,Retail
+2025-02-10,ORD015,Running Shoes R,Sports,6,59.99,6,359.94,North,Wholesale
+2025-02-12,ORD016,Denim Jacket D,Clothing,5,79.00,5,395.00,South,Retail
+2025-02-14,ORD017,Smartwatch X,Electronics,3,129.99,3,389.97,West,Retail
+2025-02-16,ORD018,Air Purifier Pro,Home Appliances,1,199.00,1,199.00,East,Retail
+2025-02-18,ORD019,Office Chair O,Furniture,2,249.99,2,499.98,North,Retail
+2025-02-21,ORD020,Thermometer A,Healthcare,10,19.99,10,199.90,South,Wholesale
+2025-03-01,ORD021,Smartphone S,Electronics,1,699.00,1,699.00,West,Retail
+2025-03-03,ORD022,Bluetooth Speaker Z,Electronics,4,89.50,4,358.00,East,Retail
+2025-03-05,ORD023,Coffee Maker C,Home Appliances,1,129.00,1,129.00,North,Retail
+2025-03-07,ORD024,Holiday Gift Pack,Misc,20,29.99,20,599.80,South,Retail
+2025-03-10,ORD025,Denim Jacket D,Clothing,3,79.00,3,237.00,West,Wholesale
+2025-03-12,ORD026,Smartwatch X,Electronics,4,129.99,4,519.96,East,Retail
+2025-03-14,ORD027,Running Shoes R,Sports,2,59.99,2,119.98,North,Retail
+2025-03-16,ORD028,Office Chair O,Furniture,1,249.99,1,249.99,South,Retail
+2025-03-18,ORD029,Blender B,Home Appliances,2,49.99,2,99.98,West,Retail
+2025-03-20,ORD030,Smartphone S,Electronics,3,699.00,3,2097.00,East,Wholesale
+2025-04-02,ORD031,Air Purifier Pro,Home Appliances,2,199.00,2,398.00,North,Retail
+2025-04-04,ORD032,Thermometer A,Healthcare,7,19.99,7,139.93,South,Retail
+2025-04-06,ORD033,Running Shoes R,Sports,5,59.99,5,299.95,West,Retail
+2025-04-08,ORD034,Smartwatch X,Electronics,2,129.99,2,259.98,East,Retail
+2025-04-10,ORD035,LED Lamp L,Home Appliances,3,24.50,3,73.50,North,Wholesale
+2025-04-12,ORD036,Coffee Maker C,Home Appliances,4,129.00,4,516.00,South,Retail
+2025-04-14,ORD037,Office Chair O,Furniture,1,249.99,1,249.99,West,Retail
+2025-04-16,ORD038,Denim Jacket D,Clothing,2,79.00,2,158.00,East,Retail
+2025-04-18,ORD039,Bluetooth Speaker Z,Electronics,3,89.50,3,268.50,North,Retail
+2025-04-20,ORD040,Smartphone S,Electronics,1,699.00,1,699.00,South,Retail
+2025-05-01,ORD041,Smartwatch X,Electronics,2,129.99,2,259.98,West,Retail
+2025-05-03,ORD042,Air Purifier Pro,Home Appliances,1,199.00,1,199.00,East,Retail
+2025-05-05,ORD043,Running Shoes R,Sports,8,59.99,8,479.92,North,Wholesale
+2025-05-07,ORD044,Office Chair O,Furniture,1,249.99,1,249.99,South,Retail
+2025-05-09,ORD045,Blender B,Home Appliances,4,49.99,4,199.96,West,Retail
+2025-05-11,ORD046,Smartphone S,Electronics,2,699.00,2,1398.00,East,Wholesale
+2025-05-13,ORD047,LED Lamp L,Home Appliances,5,24.50,5,122.50,North,Retail
+2025-05-15,ORD048,Thermometer A,Healthcare,11,19.99,11,219.89,South,Retail
+2025-05-17,ORD049,Denim Jacket D,Clothing,3,79.00,3,237.00,West,Retail
+2025-05-19,ORD050,Smartwatch X,Electronics,5,129.99,5,649.95,East,Retail
+2025-06-01,ORD051,Air Purifier Pro,Home Appliances,2,199.00,2,398.00,North,Retail
+2025-06-03,ORD052,Bluetooth Speaker Z,Electronics,1,89.50,1,89.50,South,Retail
+2025-06-05,ORD053,Running Shoes R,Sports,7,59.99,7,419.93,West,Wholesale
+2025-06-07,ORD054,Smartphone S,Electronics,1,699.00,1,699.00,East,Retail
+2025-06-09,ORD055,LED Lamp L,Home Appliances,3,24.50,3,73.50,North,Retail
+2025-06-11,ORD056,Coffee Maker C,Home Appliances,2,129.00,2,258.00,South,Retail
+2025-06-13,ORD057,Thermometer A,Healthcare,6,19.99,6,119.94,West,Retail
+2025-06-15,ORD058,Smartwatch X,Electronics,3,129.99,3,389.97,East,Retail
+2025-06-17,ORD059,Denim Jacket D,Clothing,4,79.00,4,316.00,North,Retail
+2025-06-19,ORD060,Office Chair O,Furniture,2,249.99,2,499.98,South,Wholesale
+2025-07-01,ORD061,Smartphone S,Electronics,1,699.00,1,699.00,West,Retail
+2025-07-03,ORD062,Blender B,Home Appliances,3,49.99,3,149.97,East,Retail
+2025-07-05,ORD063,Running Shoes R,Sports,6,59.99,6,359.94,North,Retail
+2025-07-07,ORD064,Smartwatch X,Electronics,2,129.99,2,259.98,South,Retail
+2025-07-09,ORD065,Air Purifier Pro,Home Appliances,2,199.00,2,398.00,West,Retail
+2025-07-11,ORD066,Bluetooth Speaker Z,Electronics,5,89.50,5,447.50,East,Retail
+2025-07-13,ORD067,LED Lamp L,Home Appliances,3,24.50,3,73.50,North,Retail
+2025-07-15,ORD068,Office Chair O,Furniture,1,249.99,1,249.99,South,Retail
+2025-07-17,ORD069,Running Shoes R,Sports,4,59.99,4,239.96,West,Retail
+2025-07-19,ORD070,Denim Jacket D,Clothing,3,79.00,3,237.00,East,Retail
+2025-07-21,ORD071,Smartphone S,Electronics,2,699.00,2,1398.00,North,Wholesale
+2025-07-23,ORD072,Holiday Gift Pack,Misc,20,29.99,20,599.80,South,Retail
+2025-08-01,ORD073,Smartwatch X,Electronics,3,129.99,3,389.97,West,Retail
+2025-08-03,ORD074,Air Purifier Pro,Home Appliances,1,199.00,1,199.00,East,Retail
+2025-08-05,ORD075,Running Shoes R,Sports,8,59.99,8,479.92,North,Retail
+2025-08-07,ORD076,Office Chair O,Furniture,1,249.99,1,249.99,South,Retail
+2025-08-09,ORD077,Blender B,Home Appliances,4,49.99,4,199.96,West,Retail
+2025-08-11,ORD078,Smartphone S,Electronics,2,699.00,2,1398.00,East,Retail
+2025-08-13,ORD079,LED Lamp L,Home Appliances,5,24.50,5,122.50,North,Wholesale
+2025-08-15,ORD080,Thermometer A,Healthcare,9,19.99,9,179.91,South,Retail
+2025-08-17,ORD081,Denim Jacket D,Clothing,3,79.00,3,237.00,West,Retail
+2025-08-19,ORD082,Smartwatch X,Electronics,5,129.99,5,649.95,East,Retail
+2025-08-21,ORD083,Air Purifier Pro,Home Appliances,2,199.00,2,398.00,North,Retail
+2025-08-23,ORD084,Bluetooth Speaker Z,Electronics,3,89.50,3,268.50,South,Retail
+2025-08-25,ORD085,Running Shoes R,Sports,6,59.99,6,359.94,West,Wholesale
+2025-08-27,ORD086,Smartphone S,Electronics,1,699.00,1,699.00,East,Retail
+2025-08-29,ORD087,Office Chair O,Furniture,2,249.99,2,499.98,North,Retail
+2025-08-31,ORD088,LED Lamp L,Home Appliances,4,24.50,4,98.00,South,Retail
+2025-09-02,ORD089,Blender B,Home Appliances,3,49.99,3,149.97,West,Retail
+2025-09-04,ORD090,Smartwatch X,Electronics,2,129.99,2,259.98,East,Retail
+2025-09-06,ORD091,Running Shoes R,Sports,5,59.99,5,299.95,North,Retail
+2025-09-08,ORD092,Thermometer A,Healthcare,8,19.99,8,159.92,South,Retail
+2025-09-10,ORD093,Denim Jacket D,Clothing,2,79.00,2,158.00,West,Retail
+2025-09-12,ORD094,Smartphone S,Electronics,3,699.00,3,2097.00,East,Wholesale
+2025-09-14,ORD095,Office Chair O,Furniture,1,249.99,1,249.99,North,Retail
+2025-09-16,ORD096,Bluetooth Speaker Z,Electronics,4,89.50,4,358.00,South,Retail
