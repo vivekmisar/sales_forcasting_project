@@ -4,8 +4,7 @@ ForecastFlow is a modern, interactive web application designed to transform raw 
 
 ## ✨ Features
 
-- **🎨 Premium "GOATED" UI**:
-    - **Glassmorphism Design**: Sleek, modern dark theme with frosted glass effects.
+- **🎨 Premium UI**:
     - **3D Background**: Interactive particle system powered by Three.js.
     - **Smooth Animations**: Float effects, transitions, and polished interactions.
     - **Responsive Grid**: Modular dashboard layout that adapts to any screen.
